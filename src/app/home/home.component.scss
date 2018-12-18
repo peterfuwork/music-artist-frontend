@@ -1,0 +1,36 @@
+
+
+.input-wrapper {
+  text-align:center;
+  max-width:500px;
+  margin: 10rem auto;
+  .input {
+    font-size: 4rem;
+    padding: 0 1rem;
+  }
+}
+
+.showSpinner {
+    text-align:center;
+  .loading {
+    width:50px;
+  }
+}
+
+.carousel-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  .carousel {
+    .slick-slide {
+      margin: 1rem;
+      .img {
+        cursor:pointer;
+      }
+      .name {
+        text-align:center;
+        margin:1rem 0;
+      }
+    }
+  }
+}
