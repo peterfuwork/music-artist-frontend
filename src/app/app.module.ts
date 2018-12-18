@@ -11,8 +11,6 @@ import { NavComponent } from './nav/nav.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MatchesComponent } from './matches/matches.component';
 
-import { HttpService } from './http.service';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +27,6 @@ import { HttpService } from './http.service';
     SlickModule.forRoot()
   ],
   providers: [
-    HttpService
   ],
   bootstrap: [AppComponent]
 })

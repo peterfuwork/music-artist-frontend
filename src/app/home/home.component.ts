@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from './../http.service';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-home',
@@ -14,22 +15,68 @@ export class HomeComponent implements OnInit {
     'autoplay': true,
     'dots': true,
     'speed': 300,
+    'responsive': [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 885,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          arrows: false,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+          dots: false
+        }
+      }
+    ]
   };
+
 
   public artistsArr: any = [];
   public artistsObj: any = {};
   public showSpinner = true;
-
-    constructor(private _httpService: HttpService) {}
-
+  artist_name = 'taylor';
+  private _url = `https://spotify-graphql-server.herokuapp.com/graphql?query=%7B%0A%20%20queryArtists(byName%3A%22${this.artist_name}%22)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%20%20image%0A%20%20%7D%0A%7D%0A`;
+  constructor(private httpClient: HttpClient) {
+    this.httpClient.get(this._url)
+    .toPromise()
+    .then(data => {
+      this.showSpinner = false;
+      this.artistsObj = data;
+      this.artistsArr = this.artistsObj.data.queryArtists;
+      console.log(this.artistsArr);
+    })
+    .catch(console.log);
+  }
   ngOnInit() {
-    this._httpService.getData()
-      .subscribe(data => {
-        this.showSpinner = false;
-        this.artistsObj = data;
-        this.artistsArr = this.artistsObj.data.queryArtists;
-        console.log(this.artistsArr);
-      });
+  }
+  onSearchArtist(event: Event) {
+    this.artist_name = (<HTMLInputElement>event.target).value;
+    this._url = `https://spotify-graphql-server.herokuapp.com/graphql?query=%7B%0A%20%20queryArtists(byName%3A%22${this.artist_name}%22)%20%7B%0A%20%20%20%20name%0A%20%20%20%20id%0A%20%20%20%20image%0A%20%20%7D%0A%7D%0A`;
+    this.httpClient.get(this._url)
+    .toPromise()
+    .then(data => {
+      this.showSpinner = false;
+      this.artistsObj = data;
+      this.artistsArr = this.artistsObj.data.queryArtists;
+      console.log(this.artistsArr);
+    })
+    .catch(console.log);
   }
   afterChange(e) {
     console.log('afterChange');
